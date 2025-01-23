@@ -1,5 +1,7 @@
-from core.models import BaseModel
 from django.db import models
+
+from core.models import BaseModel
+from user.models import User
 
 
 class Product(BaseModel):
@@ -11,6 +13,7 @@ class Product(BaseModel):
 
 
 class Order(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 
