@@ -1,3 +1,27 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
+from enum import IntEnum
+from typing import Tuple
+
+
+class Role(IntEnum):
+    ADMIN = 0
+    CUSTOMER = 1
+
+
+class User(AbstractUser):
+    ROLES: Tuple[tuple] = (
+        (Role.ADMIN.value, "Administrator"),
+        (Role.CUSTOMER.value, "Customer"),
+    )
+
+    role = models.SmallIntegerField(choices=ROLES, default=Role.CUSTOMER.value)
+
+    @property
+    def is_admin(self) -> bool:
+        return self.role == Role.ADMIN.value
+
+    @property
+    def is_customer(self) -> bool:
+        return self.role == Role.CUSTOMER.value
