@@ -4,13 +4,15 @@ from django.db import models
 from enum import IntEnum
 from typing import Tuple
 
+from core.models import BaseModel
+
 
 class Role(IntEnum):
     ADMIN = 0
     CUSTOMER = 1
 
 
-class User(AbstractUser):
+class User(AbstractUser, BaseModel):
     ROLES: Tuple[tuple] = (
         (Role.ADMIN.value, "Administrator"),
         (Role.CUSTOMER.value, "Customer"),
