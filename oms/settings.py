@@ -141,3 +141,21 @@ REST_FRAMEWORK = {
     'DEFAULT_VERSION': 'v1',
     'ALLOWED_VERSIONS': ['v1'],
 }
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API Documentation',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'CONTACT': {
+        "name": "Amir Shabani",
+        "email": "ami.shbni@gmail.com",
+    },
+    'SWAGGER_UI_SETTINGS': {
+        'docExpansion': None,
+        'filter': True,
+        'tryItOutEnabled': True,
+        'tagsSorter': 'alpha',
+        'defaultModelsExpandDepth': -1,
+    },
+}
