@@ -32,3 +32,11 @@ docker-compose up -d --build
 
 ## Documentation
 You can view the Swagger UI at http://127.0.0.1/api/v1/docs.
+
+
+## Tests
+To run the tests, execute this command:
+
+```shell
+docker compose exec -it web python manage.py test
+```

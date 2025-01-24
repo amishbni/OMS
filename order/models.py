@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 
 from core.models import BaseModel
@@ -9,7 +11,7 @@ class Product(BaseModel):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"{self.name} at {self.price}"
+        return f"{self.name} at {self.price:.2f}"
 
 
 class Order(BaseModel):
@@ -17,7 +19,7 @@ class Order(BaseModel):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
-        return f"{self.user}: {self.price}"
+        return f"{self.user}: {self.price:.2f}"
 
 
 class OrderItem(BaseModel):
@@ -30,12 +32,17 @@ class OrderItem(BaseModel):
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.order.price += (self.count * self.product.price)
+            self.order.price = Decimal(self.order.price) + Decimal(self.count * self.product.price)
             self.order.save(update_fields=["price"])
         else:
             order_item: OrderItem = OrderItem.objects.get(pk=self.pk)
             if order_item.count != self.count:
                 changed_count: int = self.count - order_item.count
-                self.order.price += (changed_count * self.product.price)
+                self.order.price = Decimal(self.order.price) + Decimal(changed_count * self.product.price)
                 self.order.save(update_fields=["price"])
         super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        self.order.price = Decimal(self.order.price) - (self.count * Decimal(self.product.price))
+        self.order.save(update_fields=["price"])
+        super().delete(*args, **kwargs)
