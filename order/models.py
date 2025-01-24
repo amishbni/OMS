@@ -39,4 +39,3 @@ class OrderItem(BaseModel):
                 self.order.price += (changed_count * self.product.price)
                 self.order.save(update_fields=["price"])
         super().save(*args, **kwargs)
-
