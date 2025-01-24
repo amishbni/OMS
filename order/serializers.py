@@ -1,5 +1,3 @@
-from rest_framework import serializers
-
 from core.serializers import BaseSerializer
 from order.models import Product, Order, OrderItem
 
